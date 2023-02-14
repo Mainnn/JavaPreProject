@@ -4,6 +4,7 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,18 +63,22 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public List<User> getAllUsers() {
-        ;
         List<User>list = new ArrayList<>();
-            try(Statement st = conn.createStatement();
-                ResultSet resultSet = st.executeQuery("SELECT * FROM users");) {
+        try {
+            statement = conn.prepareStatement("SELECT * FROM Users");
+            ResultSet resultSet =statement.executeQuery();
                 while (resultSet.next()){
-                User user = new User(resultSet.getString(2),resultSet.getString(3),resultSet.getByte(4));
-                user.setId((long) resultSet.getInt(1));
-                list.add(user);
+                    long id = resultSet.getLong(1);
+                    Byte age = resultSet.getByte(2);
+                    String lastName = resultSet.getString(3);
+                    String name = resultSet.getString(4);
+                    User user = new User(name,lastName,age);
+                    user.setId(id);
+                    list.add(user);
             }
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
-
         }
         return list;
     }

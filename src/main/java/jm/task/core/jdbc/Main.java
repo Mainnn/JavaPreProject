@@ -26,7 +26,7 @@ public class Main {
         userList = service.getAllUsers();
         User us = userList.get(1);
         userList.stream()
-        .forEachOrdered(x -> System.out.println(x.toString()));
+                .forEachOrdered(x -> System.out.println(x.toString()));
         service.cleanUsersTable();
         service.dropUsersTable();
     }

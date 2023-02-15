@@ -3,15 +3,21 @@ package jm.task.core.jdbc;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.service.UserServiceImpl;
-import jm.task.core.jdbc.util.Util;
+import jm.task.core.jdbc.util.HibernateUtil;
+import org.hibernate.Session;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class TestMain {
     private static UserService service = new UserServiceImpl();
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        //runHibernate();
+        System.out.printf("lj");
+        //runJDBC();
+    }
+    private static void runJDBC(){
         service.createUsersTable();
         List<User> userList = new ArrayList<>();
         userList.add(new User("Tommi","Fommi",(byte) 10));
@@ -29,5 +35,9 @@ public class Main {
                 .forEachOrdered(x -> System.out.println(x.toString()));
         service.cleanUsersTable();
         service.dropUsersTable();
+    }
+    private static void runHibernate(){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.close();
     }
 }
